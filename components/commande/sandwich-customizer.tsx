@@ -151,7 +151,7 @@ export function SandwichCustomizer({ item, onClose }: SandwichCustomizerProps) {
                         </span>
                       </div>
                       <span className="text-xs font-semibold text-slate-400 shrink-0 ml-2">
-                        {ing.price === 0 ? "Inclus" : `+ ${formatFCFA(ing.price)}`}
+                        {ing.price === 0 ? "Gratuit" : `+ ${formatFCFA(ing.price)}`}
                       </span>
                     </button>
                   )

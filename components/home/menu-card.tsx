@@ -7,8 +7,9 @@ import { type MenuItem, formatFCFA } from "@/lib/menu-data"
 import { useTranslation } from "@/components/providers/language-provider"
 import { useState } from "react"
 import { SandwichCustomizer } from "@/components/commande/sandwich-customizer"
+import { DrinkPicker } from "@/components/commande/drink-picker"
 
-export function MenuCard({ item }: { item: MenuItem }) {
+export function MenuCard({ item, isDrink = false }: { item: MenuItem; isDrink?: boolean }) {
   const { t, lang } = useTranslation()
   const [isCustomizerOpen, setIsCustomizerOpen] = useState(false)
 
@@ -57,10 +58,17 @@ export function MenuCard({ item }: { item: MenuItem }) {
 
       {/* Customizer popup */}
       {isCustomizerOpen && (
-        <SandwichCustomizer
-          item={item}
-          onClose={() => setIsCustomizerOpen(false)}
-        />
+        isDrink ? (
+          <DrinkPicker
+            drinks={[item]}
+            onClose={() => setIsCustomizerOpen(false)}
+          />
+        ) : (
+          <SandwichCustomizer
+            item={item}
+            onClose={() => setIsCustomizerOpen(false)}
+          />
+        )
       )}
     </>
   )

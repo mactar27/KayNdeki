@@ -38,8 +38,10 @@ type Step = "pick-drink" | "pick-suboption"
 
 export function DrinkPicker({ drinks, onClose }: DrinkPickerProps) {
   const { addItem } = useCart()
-  const [step, setStep] = useState<Step>("pick-drink")
-  const [selectedDrink, setSelectedDrink] = useState<MenuItem | null>(null)
+  const [selectedDrink, setSelectedDrink] = useState<MenuItem | null>(drinks.length === 1 ? drinks[0] : null)
+  const [step, setStep] = useState<Step>(
+    drinks.length === 1 && DRINK_SUBOPTIONS[drinks[0].id] ? "pick-suboption" : "pick-drink"
+  )
   const [selectedSuboption, setSelectedSuboption] = useState<string | null>(null)
 
   const suboptions = selectedDrink ? DRINK_SUBOPTIONS[selectedDrink.id] : null
@@ -83,7 +85,7 @@ export function DrinkPicker({ drinks, onClose }: DrinkPickerProps) {
 
         {/* Header */}
         <div className="flex items-center gap-3 p-5 border-b border-slate-100">
-          {step === "pick-suboption" && (
+          {step === "pick-suboption" && drinks.length > 1 && (
             <button
               onClick={() => { setStep("pick-drink"); setSelectedSuboption(null) }}
               className="rounded-full bg-slate-100 p-2 text-slate-500 hover:bg-slate-200 transition shrink-0"

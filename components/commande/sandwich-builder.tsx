@@ -9,9 +9,10 @@ import { toast } from "sonner"
 interface SandwichBuilderProps {
   isOpen: boolean
   onClose: () => void
+  isInline?: boolean
 }
 
-export function SandwichBuilder({ isOpen, onClose }: SandwichBuilderProps) {
+export function SandwichBuilder({ isOpen, onClose, isInline = false }: SandwichBuilderProps) {
   const { addItem } = useCart()
   
   // State for selected ingredients (array of IDs)
@@ -52,7 +53,7 @@ export function SandwichBuilder({ isOpen, onClose }: SandwichBuilderProps) {
 
     addItem(customProduct, quantity)
     toast.success("Sandwich personnalisé ajouté au panier !")
-    onClose()
+    if (!isInline) onClose()
     
     // Reset state
     setSelectedIds([])
@@ -66,22 +67,23 @@ export function SandwichBuilder({ isOpen, onClose }: SandwichBuilderProps) {
     return acc
   }, {} as Record<string, Ingredient[]>)
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="flex h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-3xl bg-white shadow-2xl">
-        {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-100 p-6">
-          <div>
-            <h2 className="text-2xl font-bold text-slate-800">Compose ton sandwich</h2>
-            <p className="text-sm text-slate-500">Choisis tes ingrédients préférés</p>
-          </div>
+  const content = (
+    <div className={`flex flex-col overflow-hidden bg-white ${isInline ? 'w-full h-auto' : 'h-[90vh] w-full max-w-2xl rounded-3xl shadow-2xl'}`}>
+      {/* Header */}
+      <div className="flex items-center justify-between border-b border-slate-100 p-6">
+        <div>
+          <h2 className="text-2xl font-bold text-slate-800">Compose ton sandwich</h2>
+          <p className="text-sm text-slate-500">Choisis tes ingrédients préférés</p>
+        </div>
+        {!isInline && (
           <button 
             onClick={onClose}
             className="rounded-full bg-slate-100 p-2 text-slate-500 hover:bg-slate-200 transition"
           >
             <X className="size-5" />
           </button>
-        </div>
+        )}
+      </div>
 
         {/* Content (Scrollable) */}
         <div className="flex-1 overflow-y-auto p-6 space-y-8">
@@ -162,6 +164,15 @@ export function SandwichBuilder({ isOpen, onClose }: SandwichBuilderProps) {
           </div>
         </div>
       </div>
+  )
+
+  if (isInline) {
+    return content
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm animate-in fade-in duration-200">
+      {content}
     </div>
   )
 }
