@@ -82,11 +82,18 @@ export function OrdersTab({ orders }: { orders: any[] }) {
                   <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Contenu du panier</h4>
                   <ul className="space-y-3">
                     {order.items.map((item: any) => (
-                      <li key={item.id} className="flex justify-between text-sm">
-                        <span className="text-slate-700">
-                          <span className="font-medium text-slate-900">{item.qty}x</span> {item.title}
-                        </span>
-                        <span className="text-slate-500">{formatFCFA(item.unit_price * item.qty)}</span>
+                      <li key={item.id} className="flex flex-col text-sm">
+                        <div className="flex justify-between">
+                          <span className="text-slate-700">
+                            <span className="font-medium text-slate-900">{item.qty}x</span> {item.title}
+                          </span>
+                          <span className="text-slate-500">{formatFCFA(item.unit_price * item.qty)}</span>
+                        </div>
+                        {item.details && (
+                          <span className="text-xs text-slate-500 mt-0.5 ml-6">
+                            {item.details}
+                          </span>
+                        )}
                       </li>
                     ))}
                   </ul>
