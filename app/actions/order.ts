@@ -1,0 +1,95 @@
+"use server"
+
+import { getPool } from "@/lib/db"
+import { randomUUID } from "crypto"
+
+export interface OrderInput {
+  name: string
+  phone: string
+  address: string
+  zone: string
+  payment: string
+  subtotal: number
+  deliveryFee: number
+  total: number
+  items: Array<{
+    key: string
+    id: string
+    name: string
+    details: string
+    price: number
+    qty: number
+  }>
+}
+
+export async function createOrderAction(input: OrderInput) {
+  // Graceful fallback if no database is configured (for local testing)
+  if (!process.env.DATABASE_URL) {
+    console.log("DATABASE_URL non configurée, la commande n'a pas été sauvegardée en base de données.")
+    return { success: true, orderId: "dummy-" + randomUUID() }
+  }
+
+  const pool = getPool()
+  const orderId = randomUUID()
+  const now = new Date()
+
+  try {
+    // In a real app we would use a transaction
+    await pool.execute(
+      `INSERT INTO orders (id, customer_name, phone, address, status, subtotal, delivery_fee, total, payment_method)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        orderId,
+        input.name,
+        input.phone,
+        `${input.address} (${input.zone})`,
+        "pending",
+        input.subtotal,
+        input.deliveryFee,
+        input.total,
+        input.payment,
+      ]
+    )
+
+    for (const item of input.items) {
+      await pool.execute(
+        `INSERT INTO order_items (order_id, title, details, unit_price, qty)
+         VALUES (?, ?, ?, ?, ?)`,
+        [orderId, item.name, item.details || "", item.price, item.qty]
+      )
+    }
+
+    return { success: true, orderId }
+  } catch (error) {
+    console.error("Failed to create order:", error)
+    return { success: false, error: "Erreur lors de la création de la commande" }
+  }
+}
+
+import { revalidatePath } from "next/cache"
+
+export async function updateOrderStatusAction(orderId: string, status: string) {
+  try {
+    const pool = getPool()
+    await pool.execute("UPDATE orders SET status = ? WHERE id = ?", [status, orderId])
+    revalidatePath("/admin")
+    return { success: true }
+  } catch (error) {
+    console.error("Error updating order status:", error)
+    return { success: false, error: "Erreur lors de la mise à jour" }
+  }
+}
+
+export async function deleteAllOrdersAction() {
+  try {
+    const pool = getPool()
+    // In TiDB with foreign keys, deleting from orders might not cascade automatically depending on setup
+    // But we set ON DELETE CASCADE in init-db.js, so deleting from orders will delete order_items.
+    await pool.execute("DELETE FROM orders")
+    revalidatePath("/admin")
+    return { success: true }
+  } catch (error) {
+    console.error("Error deleting all orders:", error)
+    return { success: false, error: "Erreur lors de la suppression des commandes" }
+  }
+}
