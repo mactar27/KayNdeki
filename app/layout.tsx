@@ -7,6 +7,7 @@ import { SiteHeader } from "@/components/layout/site-header"
 import { SiteFooter } from "@/components/layout/site-footer"
 import { Toaster } from "@/components/ui/sonner"
 import { LanguageProvider } from "@/components/providers/language-provider"
+import { AppInitializer } from "@/components/providers/app-initializer"
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -51,11 +52,13 @@ export default async function RootLayout({
       <body className="font-sans antialiased">
         <LanguageProvider>
           <CartProvider>
-            <div className="flex min-h-dvh flex-col">
-              <SiteHeader />
-              <main className="flex-1">{children}</main>
-              <SiteFooter />
-            </div>
+            <AppInitializer>
+              <div className="flex min-h-dvh flex-col">
+                <SiteHeader />
+                <main className="flex-1">{children}</main>
+                <SiteFooter />
+              </div>
+            </AppInitializer>
           </CartProvider>
           <Toaster position="top-center" richColors />
           {process.env.NODE_ENV === "production" && <Analytics />}
