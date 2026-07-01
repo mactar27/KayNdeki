@@ -34,7 +34,7 @@ export const MENU: MenuItem[] = [
     name: "La Box Kay Ndeki",
     nameWo: "Mburu Box",
     description: "Ton sandwich au choix + crudités fraîches + œuf dur + 1 boisson au choix.",
-    price: 4000,
+    price: 3500,
     image: "/products/box.png",
     available: true,
   },
