@@ -4,6 +4,7 @@ import { getPool, query } from "@/lib/db"
 import { logoutAdminAction } from "@/app/actions/auth"
 import { getProductsAction } from "@/app/actions/products"
 import { getStatsAction } from "@/app/actions/stats"
+import { getFichesAction } from "@/app/actions/fiches"
 import { Package, LogOut } from "lucide-react"
 import { AdminTabs } from "./admin-tabs"
 
@@ -42,6 +43,7 @@ export default async function AdminDashboard() {
   const products = await getProductsAction()
   const statsResponse = await getStatsAction()
   const stats = statsResponse.data
+  const fiches = await getFichesAction()
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -68,7 +70,7 @@ export default async function AdminDashboard() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <AdminTabs initialOrders={ordersWithItems} initialProducts={products} stats={stats} />
+        <AdminTabs initialOrders={ordersWithItems} initialProducts={products} stats={stats} initialFiches={fiches} />
       </main>
     </div>
   )

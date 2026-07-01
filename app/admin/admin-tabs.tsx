@@ -6,17 +6,20 @@ import { OverviewTab } from "./overview-tab"
 import { OrdersTab } from "./orders-tab"
 import { ProductsTab } from "./products-tab"
 import { FichesTechniquesTab } from "./fiches-techniques-tab"
+import type { FicheTechnique } from "@/app/actions/fiches"
 
 type Tab = "overview" | "orders" | "products" | "fiches"
 
 export function AdminTabs({ 
   initialOrders, 
   initialProducts, 
-  stats 
+  stats,
+  initialFiches,
 }: { 
   initialOrders: any[]
   initialProducts: any[]
-  stats: any 
+  stats: any
+  initialFiches: FicheTechnique[]
 }) {
   const [activeTab, setActiveTab] = useState<Tab>("overview")
 
@@ -53,7 +56,7 @@ export function AdminTabs({
         {activeTab === "overview" && <OverviewTab stats={stats} />}
         {activeTab === "orders" && <OrdersTab orders={initialOrders} />}
         {activeTab === "products" && <ProductsTab products={initialProducts} />}
-        {activeTab === "fiches" && <FichesTechniquesTab />}
+        {activeTab === "fiches" && <FichesTechniquesTab initialFiches={initialFiches} />}
       </div>
     </div>
   )
