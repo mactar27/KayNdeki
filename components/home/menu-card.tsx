@@ -10,7 +10,7 @@ import { SandwichCustomizer } from "@/components/commande/sandwich-customizer"
 import { DrinkPicker } from "@/components/commande/drink-picker"
 import { BoxCustomizer } from "@/components/commande/box-customizer"
 
-export function MenuCard({ item, isDrink = false }: { item: MenuItem; isDrink?: boolean }) {
+export function MenuCard({ item, allItems = [], isDrink = false }: { item: MenuItem; allItems?: MenuItem[]; isDrink?: boolean }) {
   const { t, lang } = useTranslation()
   const [isCustomizerOpen, setIsCustomizerOpen] = useState(false)
 
@@ -62,6 +62,7 @@ export function MenuCard({ item, isDrink = false }: { item: MenuItem; isDrink?: 
         item.category === "box" ? (
           <BoxCustomizer
             item={item}
+            allItems={allItems}
             onClose={() => setIsCustomizerOpen(false)}
           />
         ) : isDrink ? (

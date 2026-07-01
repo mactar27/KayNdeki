@@ -8,13 +8,13 @@ import type { MenuItem } from "@/lib/menu-data"
 import { getItemsByCategory } from "@/lib/menu-data"
 import { Button } from "@/components/ui/button"
 
-export function BoxCustomizer({ item, onClose }: { item: MenuItem; onClose: () => void }) {
+export function BoxCustomizer({ item, allItems, onClose }: { item: MenuItem; allItems: MenuItem[]; onClose: () => void }) {
   const { addItem } = useCart()
   const [selectedSandwich, setSelectedSandwich] = useState<string>("")
   const [selectedDrink, setSelectedDrink] = useState<string>("")
   
-  const sandwiches = getItemsByCategory("sandwich")
-  const drinks = getItemsByCategory("drink")
+  const sandwiches = allItems.filter(i => i.category === "sandwich")
+  const drinks = allItems.filter(i => i.category === "drink")
 
   const handleAddToCart = () => {
     if (!selectedSandwich || !selectedDrink) {

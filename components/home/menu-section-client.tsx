@@ -75,7 +75,7 @@ export function MenuSectionClient({ items }: { items: MenuItem[] }) {
             <div className="flex flex-col gap-6">
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                 {sandwiches.map((item) => (
-                  <MenuCard key={item.id} item={item} />
+                  <MenuCard key={item.id} item={item} allItems={items} />
                 ))}
               </div>
             </div>
@@ -86,7 +86,7 @@ export function MenuSectionClient({ items }: { items: MenuItem[] }) {
             <div className="flex flex-col gap-6">
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                 {boxes.map((item) => (
-                  <MenuCard key={item.id} item={item} />
+                  <MenuCard key={item.id} item={item} allItems={items} />
                 ))}
               </div>
             </div>
@@ -97,7 +97,7 @@ export function MenuSectionClient({ items }: { items: MenuItem[] }) {
             <div className="flex flex-col gap-6">
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                 {drinks.map((item) => (
-                  <MenuCard key={item.id} item={item} isDrink={true} />
+                  <MenuCard key={item.id} item={item} allItems={items} isDrink={true} />
                 ))}
               </div>
             </div>
