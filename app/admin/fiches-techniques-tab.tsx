@@ -255,6 +255,7 @@ function FicheCard({
   portions,
   onDeleted,
   onUpdated,
+  onIngredientsUpdated,
 }: {
   fiche: FicheTechnique
   portions: number
