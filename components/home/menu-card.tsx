@@ -8,6 +8,7 @@ import { useTranslation } from "@/components/providers/language-provider"
 import { useState } from "react"
 import { SandwichCustomizer } from "@/components/commande/sandwich-customizer"
 import { DrinkPicker } from "@/components/commande/drink-picker"
+import { BoxCustomizer } from "@/components/commande/box-customizer"
 
 export function MenuCard({ item, isDrink = false }: { item: MenuItem; isDrink?: boolean }) {
   const { t, lang } = useTranslation()
@@ -58,7 +59,12 @@ export function MenuCard({ item, isDrink = false }: { item: MenuItem; isDrink?: 
 
       {/* Customizer popup */}
       {isCustomizerOpen && (
-        isDrink ? (
+        item.category === "box" ? (
+          <BoxCustomizer
+            item={item}
+            onClose={() => setIsCustomizerOpen(false)}
+          />
+        ) : isDrink ? (
           <DrinkPicker
             drinks={[item]}
             onClose={() => setIsCustomizerOpen(false)}

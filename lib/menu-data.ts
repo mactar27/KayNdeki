@@ -1,7 +1,7 @@
 // Catalogue de référence Kay ndeki — prix en FCFA.
 // Sert de source pour le seed de la base et de repli si la BDD est indisponible.
 
-export type MenuCategory = "sandwich"
+export type MenuCategory = "sandwich" | "box" | "ingredients" | "sauce" | "breakfast" | "drink"
 
 export interface MenuItem {
   id: string
@@ -26,6 +26,16 @@ export const MENU: MenuItem[] = [
     description: "",
     price: 2500,
     image: "/products/sandwich-viande-hachee.png",
+    available: true,
+  },
+  {
+    id: "box-kay-ndeki",
+    category: "box",
+    name: "La Box Kay Ndeki",
+    nameWo: "Mburu Box",
+    description: "Ton sandwich au choix + crudités fraîches + œuf dur + 1 boisson au choix.",
+    price: 4000,
+    image: "/products/box.png",
     available: true,
   },
   {
@@ -92,6 +102,7 @@ export const MENU: MenuItem[] = [
 
 export const CATEGORY_LABELS: Record<MenuCategory, string> = {
   sandwich: "Sandwichs",
+  box: "La Box",
   ingredients: "Ingrédients",
   sauce: "Sauces",
   breakfast: "Petit Déjeuner",
@@ -100,6 +111,7 @@ export const CATEGORY_LABELS: Record<MenuCategory, string> = {
 
 export const CATEGORY_LABELS_WO: Record<MenuCategory, string> = {
   sandwich: "Mburu yi",
+  box: "Box bi",
   ingredients: "Li ci biir",
   sauce: "Maayo yi",
   breakfast: "Ndeki yi",
@@ -108,6 +120,7 @@ export const CATEGORY_LABELS_WO: Record<MenuCategory, string> = {
 
 export const CATEGORY_LABELS_EN: Record<MenuCategory, string> = {
   sandwich: "Sandwiches",
+  box: "The Box",
   ingredients: "Ingredients",
   sauce: "Sauces",
   breakfast: "Breakfast",
