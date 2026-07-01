@@ -13,7 +13,7 @@ export function MenuSectionClient({ items }: { items: MenuItem[] }) {
   const drinks = items.filter(i => i.category === "drink")
 
   return (
-    <section id="menu" className="py-16 md:py-24 bg-white">
+    <section id="menu" className="py-16 md:py-24 bg-transparent">
       <div className="mx-auto max-w-6xl px-4">
 
         {/* Tabs */}

@@ -47,9 +47,9 @@ export default async function RootLayout({
   return (
     <html
       lang="fr"
-      className={`light ${poppins.variable} ${pacifico.variable} bg-background`}
+      className={`light ${poppins.variable} ${pacifico.variable} bg-sky-50`}
     >
-      <body className="font-sans antialiased">
+      <body className="font-sans antialiased text-slate-800">
         <LanguageProvider>
           <CartProvider>
             <AppInitializer>
