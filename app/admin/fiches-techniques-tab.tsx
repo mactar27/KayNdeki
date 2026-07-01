@@ -63,18 +63,18 @@ function IngredientRow({
           />
         </td>
         <td className="px-3 py-2">
-          <div className="flex gap-1">
+          <div className="flex justify-end gap-1">
             <input
               value={poids}
               onChange={e => setPoids(e.target.value)}
-              className="w-16 border border-blue-300 rounded-lg px-2 py-1 text-sm text-right focus:outline-none"
+              className="w-20 border border-blue-300 rounded-lg px-2 py-1 text-sm text-right focus:outline-none focus:ring-2 focus:ring-blue-400"
               type="number"
               step="0.01"
             />
             <select
               value={unite}
               onChange={e => setUnite(e.target.value)}
-              className="border border-blue-300 rounded-lg px-1 py-1 text-sm focus:outline-none"
+              className="border border-blue-300 rounded-lg px-1 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
             >
               <option value="kg">kg</option>
               <option value="unité">unité</option>
@@ -83,12 +83,14 @@ function IngredientRow({
           </div>
         </td>
         <td className="px-3 py-2">
-          <input
-            value={prixKg}
-            onChange={e => setPrixKg(e.target.value)}
-            className="w-20 border border-blue-300 rounded-lg px-2 py-1 text-sm text-right focus:outline-none"
-            type="number"
-          />
+          <div className="flex justify-end">
+            <input
+              value={prixKg}
+              onChange={e => setPrixKg(e.target.value)}
+              className="w-24 border border-blue-300 rounded-lg px-2 py-1 text-sm text-right focus:outline-none focus:ring-2 focus:ring-blue-400"
+              type="number"
+            />
+          </div>
         </td>
         <td className="px-3 py-2 text-right text-sm font-semibold text-slate-700">
           {Math.round(prixPortion)} F
@@ -186,33 +188,35 @@ function NewIngredientForm({ ficheId, position, onDone }: { ficheId: string; pos
           autoFocus
         />
       </td>
-      <td className="px-3 py-2">
-        <div className="flex gap-1">
-          <input
-            value={poids}
-            onChange={e => setPoids(e.target.value)}
-            type="number" step="0.01"
-            className="w-16 border border-emerald-300 rounded-lg px-2 py-1 text-sm text-right focus:outline-none"
-          />
-          <select
-            value={unite}
-            onChange={e => setUnite(e.target.value)}
-            className="border border-emerald-300 rounded-lg px-1 py-1 text-sm"
-          >
-            <option value="kg">kg</option>
-            <option value="unité">unité</option>
-            <option value="">—</option>
-          </select>
-        </div>
-      </td>
-      <td className="px-3 py-2">
-        <input
-          value={prixKg}
-          onChange={e => setPrixKg(e.target.value)}
-          type="number"
-          className="w-20 border border-emerald-300 rounded-lg px-2 py-1 text-sm text-right focus:outline-none"
-        />
-      </td>
+        <td className="px-3 py-2">
+          <div className="flex justify-end gap-1">
+            <input
+              value={poids}
+              onChange={e => setPoids(e.target.value)}
+              type="number" step="0.01"
+              className="w-20 border border-emerald-300 rounded-lg px-2 py-1 text-sm text-right focus:outline-none focus:ring-2 focus:ring-emerald-400"
+            />
+            <select
+              value={unite}
+              onChange={e => setUnite(e.target.value)}
+              className="border border-emerald-300 rounded-lg px-1 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400"
+            >
+              <option value="kg">kg</option>
+              <option value="unité">unité</option>
+              <option value="">—</option>
+            </select>
+          </div>
+        </td>
+        <td className="px-3 py-2">
+          <div className="flex justify-end">
+            <input
+              value={prixKg}
+              onChange={e => setPrixKg(e.target.value)}
+              type="number"
+              className="w-24 border border-emerald-300 rounded-lg px-2 py-1 text-sm text-right focus:outline-none focus:ring-2 focus:ring-emerald-400"
+            />
+          </div>
+        </td>
       <td className="px-3 py-2 text-right text-sm font-semibold text-slate-600">{Math.round(prixPortion)} F</td>
       <td className="px-5 py-2 text-right text-xs text-slate-400">—</td>
       <td className="px-3 py-2 text-right">
