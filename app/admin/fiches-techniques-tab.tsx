@@ -330,9 +330,17 @@ function FicheCard({
           </button>
         </div>
       ) : (
-        <button
+        <div
+          role="button"
+          tabIndex={0}
           onClick={() => setIsOpen(!isOpen)}
-          className="w-full flex items-center justify-between p-5 text-left hover:bg-slate-50/80 transition-colors"
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              setIsOpen(!isOpen);
+            }
+          }}
+          className="w-full flex items-center justify-between p-5 text-left hover:bg-slate-50/80 transition-colors cursor-pointer"
         >
           <div className="flex items-center gap-4">
             <div className="text-3xl w-12 h-12 flex items-center justify-center bg-slate-50 rounded-xl border border-slate-100">
@@ -372,7 +380,7 @@ function FicheCard({
             </div>
             {isOpen ? <ChevronUp className="size-5 text-slate-400 shrink-0" /> : <ChevronDown className="size-5 text-slate-400 shrink-0" />}
           </div>
-        </button>
+        </div>
       )}
 
       {/* Détail */}
