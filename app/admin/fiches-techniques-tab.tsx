@@ -34,6 +34,7 @@ function IngredientRow({
   const [unite, setUnite]         = useState(ing.unite)
   const [prixKg, setPrixKg]       = useState(String(ing.prix_kg))
   const [prixPortion, setPrixPortion] = useState(String(ing.prix_portion))
+  const [simulateur, setSimulateur] = useState("")
   const [isPending, startTransition] = useTransition()
 
   const handlePoidsChange = (val: string) => {
@@ -115,6 +116,7 @@ function IngredientRow({
             {(Number(poids) * portions).toFixed(2)} {unite}
           </span>
         </td>
+        <td className="px-3 py-2 text-right"></td>
         <td className="px-3 py-2 text-right">
           <div className="flex justify-end gap-1">
             <button
@@ -146,6 +148,22 @@ function IngredientRow({
         <span className="bg-blue-50 text-[#1A56DB] font-semibold px-2.5 py-1 rounded-lg text-xs">
           {(ing.poids * portions).toFixed(2)} {ing.unite}
         </span>
+      </td>
+      <td className="px-3 py-3 text-right">
+        <div className="flex flex-col sm:flex-row items-end sm:items-center justify-end gap-1.5">
+          <input
+            value={simulateur}
+            onChange={e => setSimulateur(e.target.value)}
+            placeholder="Achat..."
+            className="w-16 border border-slate-200 rounded-lg px-2 py-1 text-xs text-right focus:outline-none focus:ring-1 focus:ring-blue-400 bg-slate-50"
+            type="number"
+          />
+          {simulateur && ing.poids > 0 && (
+            <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg whitespace-nowrap border border-emerald-100">
+              = {Math.floor(Number(simulateur) / ing.poids)} port.
+            </span>
+          )}
+        </div>
       </td>
       <td className="px-3 py-3 text-right">
         <div className="flex justify-end gap-1">
@@ -261,8 +279,9 @@ function NewIngredientForm({ ficheId, position, onDone }: { ficheId: string; pos
             />
           </div>
         </td>
-      <td className="px-5 py-2 text-right text-xs text-slate-400">—</td>
-      <td className="px-3 py-2 text-right">
+        <td className="px-5 py-2 text-right text-xs text-slate-400">—</td>
+        <td className="px-3 py-2 text-right text-xs text-slate-400">—</td>
+        <td className="px-3 py-2 text-right">
         <div className="flex justify-end gap-1">
           <button
             onClick={handleAdd}
@@ -458,6 +477,7 @@ function FicheCard({
                   <th className="px-3 py-3 text-right text-xs font-semibold text-slate-500 uppercase tracking-wide">Prix / kg</th>
                   <th className="px-3 py-3 text-right text-xs font-bold text-[#1A56DB] uppercase tracking-wide">Coût / portion</th>
                   <th className="px-5 py-3 text-right text-xs font-semibold text-slate-500 uppercase tracking-wide">Qté pour {portions}x</th>
+                  <th className="px-3 py-3 text-right text-xs font-semibold text-emerald-600 uppercase tracking-wide whitespace-nowrap">Simulateur (Combien de portions ?)</th>
                   <th className="px-3 py-3"></th>
                 </tr>
               </thead>
@@ -487,6 +507,7 @@ function FicheCard({
                   <td colSpan={3} className="px-5 py-3 font-bold text-slate-700">Total coût</td>
                   <td className="px-3 py-3 text-right font-bold text-slate-800">{Math.round(coutPortion)} F</td>
                   <td className="px-5 py-3 text-right font-bold text-[#1A56DB]">{Math.round(coutPortion * portions)} F</td>
+                  <td className="px-3 py-3"></td>
                   <td className="px-3 py-3 text-right">
                     <button
                       onClick={() => setShowNewIng(true)}
