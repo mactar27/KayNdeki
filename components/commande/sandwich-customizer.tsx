@@ -49,7 +49,14 @@ export function SandwichCustomizer({ item, onClose }: SandwichCustomizerProps) {
     return sum + (ing?.price ?? 0)
   }, 0)
 
-  const unitPrice = item.price + extrasPrice
+  const selectedSaucesCount = selectedIds.filter(id => {
+    return INGREDIENTS.find(i => i.id === id)?.category === "sauces"
+  }).length
+
+  const extraSaucePrice = selectedSaucesCount > 2 ? (selectedSaucesCount - 2) * 100 : 0
+  const totalExtrasPrice = extrasPrice + extraSaucePrice
+
+  const unitPrice = item.price + totalExtrasPrice
   const totalPrice = unitPrice * quantity
 
   const handleAdd = () => {
@@ -122,10 +129,18 @@ export function SandwichCustomizer({ item, onClose }: SandwichCustomizerProps) {
             <div key={cat.key}>
               <h3 className="flex items-center gap-2 text-sm font-bold text-slate-500 uppercase tracking-wider mb-3">
                 <span>{cat.icon}</span> {cat.label}
+                {cat.key === "sauces" && (
+                  <span className="ml-2 text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full normal-case">
+                    2 gratuites, puis +100 FCFA
+                  </span>
+                )}
               </h3>
               <div className="space-y-2">
                 {cat.ingredients.map((ing) => {
                   const isSelected = selectedIds.includes(ing.id)
+                  const isExtraSauce = ing.category === "sauces" && !isSelected && selectedSaucesCount >= 2
+                  const displayPrice = isExtraSauce ? 100 : ing.price
+
                   return (
                     <button
                       key={ing.id}
@@ -151,7 +166,7 @@ export function SandwichCustomizer({ item, onClose }: SandwichCustomizerProps) {
                         </span>
                       </div>
                       <span className="text-xs font-semibold text-slate-400 shrink-0 ml-2">
-                        {ing.price === 0 ? "Gratuit" : `+ ${formatFCFA(ing.price)}`}
+                        {displayPrice === 0 ? "Gratuit" : `+ ${formatFCFA(displayPrice)}`}
                       </span>
                     </button>
                   )

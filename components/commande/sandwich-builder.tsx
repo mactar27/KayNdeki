@@ -34,10 +34,15 @@ export function SandwichBuilder({ isOpen, onClose, isInline = false }: SandwichB
     return sum + (ing?.price || 0)
   }, 0)
   
+  const selectedSaucesCount = selectedIds.filter(id => {
+    return INGREDIENTS.find(i => i.id === id)?.category === "sauces"
+  }).length
+  const extraSaucePrice = selectedSaucesCount > 2 ? (selectedSaucesCount - 2) * 100 : 0
+
   // Si on a sélectionné un pain (base), on ne compte pas le 200 par défaut si le prix du pain est déjà dedans,
   // ou on dit que le sandwich de base est 0 et on force à choisir un pain. Faisons ça :
   const hasBase = selectedIds.some(id => INGREDIENTS.find(i => i.id === id)?.category === "base")
-  const totalPrice = (ingredientsPrice + (hasBase ? 0 : basePrice)) * quantity
+  const totalPrice = (ingredientsPrice + extraSaucePrice + (hasBase ? 0 : basePrice)) * quantity
 
   const handleAddToCart = () => {
     const selected = selectedIds.map(id => INGREDIENTS.find(i => i.id === id)!).filter(Boolean)
@@ -93,12 +98,20 @@ export function SandwichBuilder({ isOpen, onClose, isInline = false }: SandwichB
 
             return (
               <div key={catKey}>
-                <h3 className="mb-4 text-lg font-bold text-slate-800 border-b border-slate-100 pb-2">
+                <h3 className="mb-4 text-lg font-bold text-slate-800 border-b border-slate-100 pb-2 flex items-center gap-2">
                   {catLabel}
+                  {catKey === "sauces" && (
+                    <span className="text-[11px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full font-medium">
+                      2 gratuites, puis +100 FCFA
+                    </span>
+                  )}
                 </h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {items.map((ing) => {
                     const isSelected = selectedIds.includes(ing.id)
+                    const isExtraSauce = ing.category === "sauces" && !isSelected && selectedSaucesCount >= 2
+                    const displayPrice = isExtraSauce ? 100 : ing.price
+
                     return (
                       <button
                         key={ing.id}
@@ -118,7 +131,7 @@ export function SandwichBuilder({ isOpen, onClose, isInline = false }: SandwichB
                           </div>
                         </div>
                         <span className="text-xs font-medium text-slate-500">
-                          {ing.price === 0 ? "Inclus" : `+ ${ing.price} FCFA`}
+                          {displayPrice === 0 ? "Gratuit" : `+ ${displayPrice} FCFA`}
                         </span>
                       </button>
                     )
