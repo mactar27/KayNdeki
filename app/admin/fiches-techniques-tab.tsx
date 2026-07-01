@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useTransition } from "react"
+import { useState, useTransition, useEffect } from "react"
 import {
   ChevronDown, ChevronUp, TrendingUp, Package, Calculator,
   AlertTriangle, Pencil, Trash2, Plus, Check, X, Save
@@ -241,10 +241,12 @@ function FicheCard({
   fiche,
   portions,
   onDeleted,
+  onUpdated,
 }: {
   fiche: FicheTechnique
   portions: number
   onDeleted: (id: string) => void
+  onUpdated: (id: string, data: Partial<FicheTechnique>) => void
 }) {
   const [isOpen, setIsOpen] = useState(false)
   const [editingHeader, setEditingHeader] = useState(false)
@@ -267,6 +269,7 @@ function FicheCard({
         emoji,
         prix_vente: Number(prixVente),
       })
+      onUpdated(fiche.id, { produit, emoji, prix_vente: Number(prixVente) })
       setEditingHeader(false)
     })
   }
@@ -534,6 +537,11 @@ export function FichesTechniquesTab({ initialFiches }: { initialFiches: FicheTec
   const [fiches, setFiches]         = useState<FicheTechnique[]>(initialFiches)
   const [showNewFiche, setShowNewFiche] = useState(false)
 
+  // Sync state if server data changes
+  useEffect(() => {
+    setFiches(initialFiches)
+  }, [initialFiches])
+
   const totalCout = fiches.reduce((sum, f) => {
     const cout = f.ingredients.reduce((s, i) => s + Number(i.prix_portion), 0)
     return sum + cout * portions
@@ -546,6 +554,10 @@ export function FichesTechniquesTab({ initialFiches }: { initialFiches: FicheTec
   const handleFicheCreated = (fiche: FicheTechnique) => {
     setFiches(prev => [...prev, fiche])
     setShowNewFiche(false)
+  }
+
+  const handleFicheUpdated = (id: string, data: Partial<FicheTechnique>) => {
+    setFiches(prev => prev.map(f => f.id === id ? { ...f, ...data } : f))
   }
 
   return (
@@ -595,6 +607,7 @@ export function FichesTechniquesTab({ initialFiches }: { initialFiches: FicheTec
               fiche={f}
               portions={portions}
               onDeleted={handleFicheDeleted}
+              onUpdated={handleFicheUpdated}
             />
           ))}
         </div>
