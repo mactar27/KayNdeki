@@ -33,11 +33,18 @@ function IngredientRow({
   const [poids, setPoids]         = useState(String(ing.poids))
   const [unite, setUnite]         = useState(ing.unite)
   const [prixKg, setPrixKg]       = useState(String(ing.prix_kg))
+  const [prixPortion, setPrixPortion] = useState(String(ing.prix_portion))
   const [isPending, startTransition] = useTransition()
 
-  const prixPortion = unite === "unité"
-    ? Number(prixKg) * Number(poids)
-    : Number(prixKg) * Number(poids)
+  const handlePoidsChange = (val: string) => {
+    setPoids(val)
+    setPrixPortion(String(Number(val) * Number(prixKg)))
+  }
+
+  const handlePrixKgChange = (val: string) => {
+    setPrixKg(val)
+    setPrixPortion(String(Number(poids) * Number(val)))
+  }
 
   const handleSave = () => {
     startTransition(async () => {
@@ -46,7 +53,7 @@ function IngredientRow({
         poids: Number(poids),
         unite,
         prix_kg: Number(prixKg),
-        prix_portion: prixPortion,
+        prix_portion: Number(prixPortion),
       })
       setEditing(false)
     })
@@ -66,7 +73,7 @@ function IngredientRow({
           <div className="flex justify-end gap-1">
             <input
               value={poids}
-              onChange={e => setPoids(e.target.value)}
+              onChange={e => handlePoidsChange(e.target.value)}
               className="w-20 border border-blue-300 rounded-lg px-2 py-1 text-sm text-right focus:outline-none focus:ring-2 focus:ring-blue-400"
               type="number"
               step="0.01"
@@ -86,14 +93,22 @@ function IngredientRow({
           <div className="flex justify-end">
             <input
               value={prixKg}
-              onChange={e => setPrixKg(e.target.value)}
+              onChange={e => handlePrixKgChange(e.target.value)}
               className="w-24 border border-blue-300 rounded-lg px-2 py-1 text-sm text-right focus:outline-none focus:ring-2 focus:ring-blue-400"
               type="number"
             />
           </div>
         </td>
-        <td className="px-3 py-2 text-right text-sm font-semibold text-slate-700">
-          {Math.round(prixPortion)} F
+        <td className="px-3 py-2">
+          <div className="flex justify-end">
+            <input
+              value={prixPortion}
+              onChange={e => setPrixPortion(e.target.value)}
+              className="w-24 border border-emerald-300 rounded-lg bg-emerald-50 px-2 py-1 text-sm text-right font-bold text-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+              type="number"
+              step="0.01"
+            />
+          </div>
         </td>
         <td className="px-5 py-2 text-right text-sm">
           <span className="bg-blue-100 text-blue-700 font-semibold px-2 py-0.5 rounded-lg text-xs">
@@ -158,9 +173,18 @@ function NewIngredientForm({ ficheId, position, onDone }: { ficheId: string; pos
   const [poids, setPoids]   = useState("0")
   const [unite, setUnite]   = useState("kg")
   const [prixKg, setPrixKg] = useState("0")
+  const [prixPortion, setPrixPortion] = useState("0")
   const [isPending, startTransition] = useTransition()
 
-  const prixPortion = Number(prixKg) * Number(poids)
+  const handlePoidsChange = (val: string) => {
+    setPoids(val)
+    setPrixPortion(String(Number(val) * Number(prixKg)))
+  }
+
+  const handlePrixKgChange = (val: string) => {
+    setPrixKg(val)
+    setPrixPortion(String(Number(poids) * Number(val)))
+  }
 
   const handleAdd = () => {
     if (!name.trim()) return
@@ -170,7 +194,7 @@ function NewIngredientForm({ ficheId, position, onDone }: { ficheId: string; pos
         poids: Number(poids),
         unite,
         prix_kg: Number(prixKg),
-        prix_portion: prixPortion,
+        prix_portion: Number(prixPortion),
         position,
       })
       onDone({
@@ -180,7 +204,7 @@ function NewIngredientForm({ ficheId, position, onDone }: { ficheId: string; pos
         poids: Number(poids),
         unite,
         prix_kg: Number(prixKg),
-        prix_portion: prixPortion,
+        prix_portion: Number(prixPortion),
         position
       })
     })
@@ -201,7 +225,7 @@ function NewIngredientForm({ ficheId, position, onDone }: { ficheId: string; pos
           <div className="flex justify-end gap-1">
             <input
               value={poids}
-              onChange={e => setPoids(e.target.value)}
+              onChange={e => handlePoidsChange(e.target.value)}
               type="number" step="0.01"
               className="w-20 border border-emerald-300 rounded-lg px-2 py-1 text-sm text-right focus:outline-none focus:ring-2 focus:ring-emerald-400"
             />
@@ -220,13 +244,23 @@ function NewIngredientForm({ ficheId, position, onDone }: { ficheId: string; pos
           <div className="flex justify-end">
             <input
               value={prixKg}
-              onChange={e => setPrixKg(e.target.value)}
+              onChange={e => handlePrixKgChange(e.target.value)}
               type="number"
               className="w-24 border border-emerald-300 rounded-lg px-2 py-1 text-sm text-right focus:outline-none focus:ring-2 focus:ring-emerald-400"
             />
           </div>
         </td>
-      <td className="px-3 py-2 text-right text-sm font-semibold text-slate-600">{Math.round(prixPortion)} F</td>
+        <td className="px-3 py-2">
+          <div className="flex justify-end">
+            <input
+              value={prixPortion}
+              onChange={e => setPrixPortion(e.target.value)}
+              className="w-24 border border-emerald-400 rounded-lg bg-emerald-100 px-2 py-1 text-sm text-right font-bold text-emerald-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              type="number"
+              step="0.01"
+            />
+          </div>
+        </td>
       <td className="px-5 py-2 text-right text-xs text-slate-400">—</td>
       <td className="px-3 py-2 text-right">
         <div className="flex justify-end gap-1">
@@ -420,9 +454,9 @@ function FicheCard({
               <thead>
                 <tr className="bg-slate-50">
                   <th className="px-5 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide">Ingrédient</th>
-                  <th className="px-3 py-3 text-right text-xs font-semibold text-slate-500 uppercase tracking-wide">Poids</th>
+                  <th className="px-3 py-3 text-right text-xs font-semibold text-slate-500 uppercase tracking-wide">Qté / portion</th>
                   <th className="px-3 py-3 text-right text-xs font-semibold text-slate-500 uppercase tracking-wide">Prix / kg</th>
-                  <th className="px-3 py-3 text-right text-xs font-semibold text-slate-500 uppercase tracking-wide">Coût / portion</th>
+                  <th className="px-3 py-3 text-right text-xs font-bold text-[#1A56DB] uppercase tracking-wide">Coût / portion</th>
                   <th className="px-5 py-3 text-right text-xs font-semibold text-slate-500 uppercase tracking-wide">Qté pour {portions}x</th>
                   <th className="px-3 py-3"></th>
                 </tr>
