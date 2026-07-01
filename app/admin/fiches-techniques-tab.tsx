@@ -133,7 +133,7 @@ function IngredientRow({
         </span>
       </td>
       <td className="px-3 py-3 text-right">
-        <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="flex justify-end gap-1">
           <button
             onClick={() => setEditing(true)}
             className="flex size-7 items-center justify-center rounded-lg bg-slate-100 text-slate-500 hover:bg-blue-100 hover:text-blue-600 transition"
@@ -153,7 +153,7 @@ function IngredientRow({
 }
 
 // ─── New Ingredient Form ───────────────────────────────────────────────────────
-function NewIngredientForm({ ficheId, position, onDone }: { ficheId: string; position: number; onDone: () => void }) {
+function NewIngredientForm({ ficheId, position, onDone }: { ficheId: string; position: number; onDone: (newIng?: FicheIngredient) => void }) {
   const [name, setName]     = useState("")
   const [poids, setPoids]   = useState("0")
   const [unite, setUnite]   = useState("kg")
@@ -165,7 +165,7 @@ function NewIngredientForm({ ficheId, position, onDone }: { ficheId: string; pos
   const handleAdd = () => {
     if (!name.trim()) return
     startTransition(async () => {
-      await createIngredientAction(ficheId, {
+      const res = await createIngredientAction(ficheId, {
         name,
         poids: Number(poids),
         unite,
@@ -173,7 +173,16 @@ function NewIngredientForm({ ficheId, position, onDone }: { ficheId: string; pos
         prix_portion: prixPortion,
         position,
       })
-      onDone()
+      onDone({
+        id: res.id!,
+        fiche_id: ficheId,
+        name,
+        poids: Number(poids),
+        unite,
+        prix_kg: Number(prixKg),
+        prix_portion: prixPortion,
+        position
+      })
     })
   }
 
@@ -251,6 +260,7 @@ function FicheCard({
   portions: number
   onDeleted: (id: string) => void
   onUpdated: (id: string, data: Partial<FicheTechnique>) => void
+  onIngredientsUpdated: (id: string, newIngredients: FicheIngredient[]) => void
 }) {
   const [isOpen, setIsOpen] = useState(false)
   const [editingHeader, setEditingHeader] = useState(false)
@@ -289,13 +299,24 @@ function FicheCard({
   const handleDeleteIngredient = (id: string) => {
     startTransition(async () => {
       await deleteIngredientAction(id)
-      setIngredients(prev => prev.filter(i => i.id !== id))
+      const newIngs = ingredients.filter(i => i.id !== id)
+      setIngredients(newIngs)
+      onIngredientsUpdated(fiche.id, newIngs)
     })
   }
 
   const handleSaveIngredient = async (id: string, data: Partial<FicheIngredient>) => {
     await updateIngredientAction(id, data)
-    setIngredients(prev => prev.map(i => i.id === id ? { ...i, ...data } : i))
+    const newIngs = ingredients.map(i => i.id === id ? { ...i, ...data as any } : i)
+    setIngredients(newIngs)
+    onIngredientsUpdated(fiche.id, newIngs)
+  }
+
+  const handleIngredientCreated = (newIng: FicheIngredient) => {
+    const newIngs = [...ingredients, newIng]
+    setIngredients(newIngs)
+    onIngredientsUpdated(fiche.id, newIngs)
+    setShowNewIng(false)
   }
 
   return (
@@ -419,7 +440,10 @@ function FicheCard({
                   <NewIngredientForm
                     ficheId={fiche.id}
                     position={ingredients.length}
-                    onDone={() => setShowNewIng(false)}
+                    onDone={(newIng) => {
+                      if (newIng) handleIngredientCreated(newIng)
+                      else setShowNewIng(false)
+                    }}
                   />
                 )}
               </tbody>
@@ -564,6 +588,10 @@ export function FichesTechniquesTab({ initialFiches }: { initialFiches: FicheTec
     setFiches(prev => prev.map(f => f.id === id ? { ...f, ...data } : f))
   }
 
+  const handleIngredientsUpdated = (id: string, newIngredients: FicheIngredient[]) => {
+    setFiches(prev => prev.map(f => f.id === id ? { ...f, ingredients: newIngredients } : f))
+  }
+
   return (
     <div className="space-y-6">
       {/* En-tête */}
@@ -612,6 +640,7 @@ export function FichesTechniquesTab({ initialFiches }: { initialFiches: FicheTec
               portions={portions}
               onDeleted={handleFicheDeleted}
               onUpdated={handleFicheUpdated}
+              onIngredientsUpdated={handleIngredientsUpdated}
             />
           ))}
         </div>
