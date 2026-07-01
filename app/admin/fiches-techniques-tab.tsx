@@ -3,7 +3,7 @@
 import { useState, useTransition, useEffect } from "react"
 import {
   ChevronDown, ChevronUp, TrendingUp, Package, Calculator,
-  AlertTriangle, Pencil, Trash2, Plus, Check, X, Save
+  AlertTriangle, Pencil, Trash2, Plus, Minus, Check, X, Save
 } from "lucide-react"
 import { formatFCFA } from "@/lib/menu-data"
 import type { FicheTechnique, FicheIngredient } from "@/app/actions/fiches"
@@ -151,13 +151,30 @@ function IngredientRow({
       </td>
       <td className="px-3 py-3 text-right">
         <div className="flex flex-col sm:flex-row items-end sm:items-center justify-end gap-1.5">
-          <input
-            value={simulateur}
-            onChange={e => setSimulateur(e.target.value)}
-            placeholder="Achat..."
-            className="w-16 border border-slate-200 rounded-lg px-2 py-1 text-xs text-right focus:outline-none focus:ring-1 focus:ring-blue-400 bg-slate-50"
-            type="number"
-          />
+          <div className="flex items-center bg-white border border-slate-200 rounded-lg p-0.5 shadow-sm">
+            <button 
+              onClick={() => setSimulateur(String(Math.max(0, Number(simulateur || 0) - 1)))} 
+              className="flex size-6 items-center justify-center rounded-md bg-slate-100 text-slate-600 hover:bg-slate-200 transition"
+            >
+              <Minus className="size-3" />
+            </button>
+            <div className="flex items-center px-1">
+              <input
+                value={simulateur}
+                onChange={e => setSimulateur(e.target.value)}
+                placeholder="0"
+                className="w-8 text-center text-xs font-bold focus:outline-none bg-transparent"
+                type="number"
+              />
+              <span className="text-[10px] text-slate-400 font-medium mr-1">{ing.unite}</span>
+            </div>
+            <button 
+              onClick={() => setSimulateur(String(Number(simulateur || 0) + 1))}
+              className="flex size-6 items-center justify-center rounded-md bg-slate-100 text-slate-600 hover:bg-slate-200 transition"
+            >
+              <Plus className="size-3" />
+            </button>
+          </div>
           {simulateur && ing.poids > 0 && (
             <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg whitespace-nowrap border border-emerald-100">
               = {Math.floor(Number(simulateur) / ing.poids)} port.
