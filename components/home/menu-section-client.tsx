@@ -81,7 +81,7 @@ export function MenuSectionClient({ items }: { items: MenuItem[] }) {
           
           {/* Tab: Sandwichs */}
           {activeTab === "sandwichs" && (
-            <div className="flex flex-col gap-6 bg-sky-50 p-6 rounded-3xl">
+            <div className="flex flex-col gap-6">
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                 {sandwiches.map((item) => (
                   <MenuCard key={item.id} item={item} allItems={items} />
@@ -92,7 +92,7 @@ export function MenuSectionClient({ items }: { items: MenuItem[] }) {
 
           {/* Tab: La Box */}
           {activeTab === "box" && (
-            <div className="flex flex-col gap-6 bg-sky-50 p-6 rounded-3xl">
+            <div className="flex flex-col gap-6">
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                 {boxes.map((item) => (
                   <MenuCard key={item.id} item={item} allItems={items} />
@@ -103,7 +103,7 @@ export function MenuSectionClient({ items }: { items: MenuItem[] }) {
 
           {/* Tab: Boissons */}
           {activeTab === "boissons" && (
-            <div className="flex flex-col gap-6 bg-sky-50 p-6 rounded-3xl">
+            <div className="flex flex-col gap-6">
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                 {drinks.map((item) => (
                   <MenuCard key={item.id} item={item} allItems={items} isDrink={true} />
