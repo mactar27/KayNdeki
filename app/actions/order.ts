@@ -67,11 +67,34 @@ export async function createOrderAction(input: OrderInput) {
 }
 
 import { revalidatePath } from "next/cache"
+import { sendSMS } from "@/lib/sms"
 
 export async function updateOrderStatusAction(orderId: string, status: string) {
   try {
     const pool = getPool()
+    
+    // Récupérer les infos de la commande pour le SMS
+    const [rows] = await pool.execute("SELECT customer_name, phone FROM orders WHERE id = ?", [orderId])
+    const order = (rows as any[])[0]
+
     await pool.execute("UPDATE orders SET status = ? WHERE id = ?", [status, orderId])
+    
+    // Envoyer le SMS si le statut change
+    if (order && order.phone) {
+      const firstName = order.customer_name.split(' ')[0]
+      let message = ""
+      if (status === "delivered") {
+        message = `Bonjour ${firstName}, votre commande Kay Ndeki a été livrée ! Merci de votre confiance et bon appétit. 🥐`
+      } else if (status === "cancelled") {
+        message = `Bonjour ${firstName}, votre commande Kay Ndeki a malheureusement été annulée. Contactez-nous pour plus d'infos.`
+      }
+      
+      if (message) {
+        // Envoi asynchrone pour ne pas bloquer
+        sendSMS(order.phone, message).catch(console.error)
+      }
+    }
+
     revalidatePath("/admin")
     return { success: true }
   } catch (error) {
