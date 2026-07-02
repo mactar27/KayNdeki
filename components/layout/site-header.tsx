@@ -21,6 +21,8 @@ export function SiteHeader() {
   const pathname = usePathname()
   const { lang, setLang, t } = useTranslation()
 
+  if (pathname === '/qr') return null
+
   const NAV = [
     { href: "/", label: t("nav_home") },
     { href: "/menu", label: t("nav_menu") },

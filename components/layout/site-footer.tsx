@@ -2,10 +2,14 @@
 
 import Link from "next/link"
 import { Bike, ShieldCheck, Headphones, Leaf } from "lucide-react"
+import { usePathname } from "next/navigation"
 import { useTranslation } from "@/components/providers/language-provider"
 
 export function SiteFooter() {
   const { t } = useTranslation()
+  const pathname = usePathname()
+
+  if (pathname === '/qr') return null
 
   const FEATURES = [
     { icon: Bike, title: t("feat_delivery"), sub: t("feat_delivery_sub") },

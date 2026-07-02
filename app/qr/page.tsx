@@ -9,57 +9,52 @@ export const metadata: Metadata = {
 
 export default function QRCodePage() {
   return (
-    <div className="min-h-screen bg-sky-50 flex items-center justify-center p-4 print:p-0 print:bg-white">
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 print:p-0 print:bg-white">
       {/* 
-        This container is styled to look like a small printable poster or table stand.
-        A4 size roughly scales to 794x1123px, but we'll use a clean fixed-aspect card. 
+        A4 proportion wrapper, responsive on screen.
       */}
-      <div className="bg-white w-full max-w-md aspect-[3/4] rounded-3xl shadow-2xl flex flex-col items-center justify-between p-10 text-center border-4 border-[#1A56DB] relative overflow-hidden print:shadow-none print:border-none print:w-full print:max-w-none print:h-screen print:rounded-none">
+      <div className="bg-white w-full max-w-lg rounded-[2rem] shadow-xl flex flex-col items-center justify-center p-8 sm:p-12 border border-slate-100 relative overflow-hidden print:shadow-none print:border-none print:w-full print:h-screen print:max-w-none print:rounded-none print:p-0">
         
-        {/* Background Decoration */}
-        <div className="absolute top-[-50px] right-[-50px] w-40 h-40 bg-amber-100 rounded-full mix-blend-multiply opacity-50 blur-2xl"></div>
-        <div className="absolute bottom-[-50px] left-[-50px] w-40 h-40 bg-blue-100 rounded-full mix-blend-multiply opacity-50 blur-2xl"></div>
-
-        <div className="relative z-10 w-full">
-          {/* Logo */}
-          <div className="flex justify-center mb-6">
-            <div className="bg-white p-2 rounded-full shadow-md border border-slate-100">
-              <Image
-                src="/kay-ndeki-logo.jpeg"
-                alt="Kay ndeki Logo"
-                width={80}
-                height={80}
-                className="rounded-full object-cover"
-              />
-            </div>
+        {/* Top Decorative Header */}
+        <div className="w-full text-center space-y-6 z-10">
+          <div className="mx-auto bg-white p-3 rounded-full shadow-sm border border-slate-100 inline-block">
+            <Image
+              src="/kay-ndeki-logo.jpeg"
+              alt="Kay ndeki Logo"
+              width={100}
+              height={100}
+              className="rounded-full object-cover w-20 h-20 sm:w-24 sm:h-24"
+            />
           </div>
 
-          <h1 className="font-script text-5xl text-[#1A56DB] mb-2">Kay ndeki</h1>
-          <h2 className="text-xl font-bold text-slate-800 uppercase tracking-widest">
-            Faim de petit déj ?
-          </h2>
-          <p className="text-slate-500 mt-2">
-            Flashez pour commander sans attendre !
-          </p>
+          <div>
+            <h1 className="font-script text-5xl sm:text-6xl text-[#1A56DB] mb-3">Kay ndeki</h1>
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-800 uppercase tracking-widest">
+              Commandez ici
+            </h2>
+            <p className="text-slate-500 mt-2 text-lg">
+              Scannez le QR code avec votre téléphone
+            </p>
+          </div>
         </div>
 
-        {/* QR Code */}
-        <div className="relative z-10 bg-white p-6 rounded-3xl shadow-lg border border-slate-100 my-8">
+        {/* QR Code Container */}
+        <div className="relative z-10 bg-white p-4 sm:p-6 rounded-3xl shadow-sm border-2 border-slate-100 my-10">
           <Image
             src="/qr-code.png"
             alt="QR Code Kay Ndeki"
-            width={250}
-            height={250}
-            className="w-48 h-48 sm:w-64 sm:h-64 object-contain"
+            width={300}
+            height={300}
+            className="w-56 h-56 sm:w-64 sm:h-64 object-contain"
           />
         </div>
 
         {/* Footer info */}
-        <div className="relative z-10 w-full border-t-2 border-dashed border-slate-200 pt-6">
-          <div className="flex items-center justify-center gap-2 text-slate-800 font-semibold text-lg">
+        <div className="relative z-10 w-full text-center space-y-2">
+          <div className="inline-flex items-center justify-center gap-2 bg-sky-50 px-6 py-3 rounded-full text-[#1A56DB] font-bold text-lg sm:text-xl border border-sky-100">
             <span>🌐</span> www.kay-ndeki.com
           </div>
-          <p className="text-sm text-slate-400 mt-1">Prêt en 15 minutes • Sur place ou à emporter</p>
+          <p className="text-slate-400 font-medium pt-4">Petit déjeuner 100% Sénégalais</p>
         </div>
       </div>
       
