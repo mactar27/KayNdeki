@@ -17,6 +17,15 @@ export function MenuSectionClient({ items }: { items: MenuItem[] }) {
     <section id="menu" className="py-16 md:py-24 bg-transparent">
       <div className="mx-auto max-w-6xl px-4">
 
+        <div className="text-center mb-8 px-2">
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-2 font-poppins">
+            Choisis ton petit déjeuner idéal
+          </h2>
+          <p className="text-slate-500 text-sm sm:text-base">
+            pour bien commencer ta journée !
+          </p>
+        </div>
+
         {/* Tabs */}
         <div className="flex justify-center mb-12">
           <div className="inline-flex flex-wrap justify-center rounded-3xl sm:rounded-full bg-slate-100 p-1.5 shadow-inner gap-1 sm:gap-0">
@@ -24,7 +33,7 @@ export function MenuSectionClient({ items }: { items: MenuItem[] }) {
               onClick={() => setActiveTab("box")}
               className={`flex items-center gap-2 rounded-full px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold transition-all ${
                 activeTab === "box"
-                  ? "bg-white text-[#1A56DB] shadow-sm ring-1 ring-slate-200"
+                  ? "bg-[#1A56DB] text-white shadow-md"
                   : "text-slate-500 hover:text-slate-700"
               }`}
             >
@@ -35,7 +44,7 @@ export function MenuSectionClient({ items }: { items: MenuItem[] }) {
               onClick={() => setActiveTab("sandwichs")}
               className={`flex items-center gap-2 rounded-full px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold transition-all ${
                 activeTab === "sandwichs"
-                  ? "bg-white text-[#1A56DB] shadow-sm ring-1 ring-slate-200"
+                  ? "bg-[#1A56DB] text-white shadow-md"
                   : "text-slate-500 hover:text-slate-700"
               }`}
             >
@@ -46,7 +55,7 @@ export function MenuSectionClient({ items }: { items: MenuItem[] }) {
               onClick={() => setActiveTab("boissons")}
               className={`flex items-center gap-2 rounded-full px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold transition-all ${
                 activeTab === "boissons"
-                  ? "bg-white text-[#1A56DB] shadow-sm ring-1 ring-slate-200"
+                  ? "bg-[#1A56DB] text-white shadow-md"
                   : "text-slate-500 hover:text-slate-700"
               }`}
             >
@@ -57,7 +66,7 @@ export function MenuSectionClient({ items }: { items: MenuItem[] }) {
               onClick={() => setActiveTab("surmesure")}
               className={`flex items-center gap-2 rounded-full px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold transition-all ${
                 activeTab === "surmesure"
-                  ? "bg-white text-[#1A56DB] shadow-sm ring-1 ring-slate-200"
+                  ? "bg-[#1A56DB] text-white shadow-md"
                   : "text-slate-500 hover:text-slate-700"
               }`}
             >
