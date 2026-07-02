@@ -18,10 +18,10 @@ export function MenuSectionClient({ items }: { items: MenuItem[] }) {
       <div className="mx-auto max-w-6xl px-4">
 
         <div className="text-center mb-8 px-2">
-          <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 mb-2 font-poppins">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-script text-[#1A56DB] mb-3">
             Choisis ton petit déjeuner idéal
           </h2>
-          <p className="text-slate-500 text-sm sm:text-base">
+          <p className="text-slate-500 text-base sm:text-lg">
             pour bien commencer ta journée !
           </p>
         </div>
