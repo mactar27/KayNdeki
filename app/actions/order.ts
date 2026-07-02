@@ -81,15 +81,28 @@ export async function updateOrderStatusAction(orderId: string, status: string) {
 }
 
 export async function deleteAllOrdersAction() {
+  const pool = getPool()
   try {
-    const pool = getPool()
-    // In TiDB with foreign keys, deleting from orders might not cascade automatically depending on setup
-    // But we set ON DELETE CASCADE in init-db.js, so deleting from orders will delete order_items.
-    await pool.execute("DELETE FROM orders")
-    revalidatePath("/admin")
+    await pool.execute('DELETE FROM order_items')
+    await pool.execute('DELETE FROM orders')
+    revalidatePath('/admin')
     return { success: true }
   } catch (error) {
     console.error("Error deleting all orders:", error)
-    return { success: false, error: "Erreur lors de la suppression des commandes" }
+    return { success: false, error: "Failed to delete orders" }
+  }
+}
+
+export async function getLatestOrderIdAction() {
+  const pool = getPool()
+  try {
+    const [rows] = await pool.execute('SELECT id FROM orders ORDER BY created_at DESC LIMIT 1')
+    if (rows && (rows as any[]).length > 0) {
+      return (rows as any[])[0].id
+    }
+    return null
+  } catch (error) {
+    console.error("Error fetching latest order ID:", error)
+    return null
   }
 }

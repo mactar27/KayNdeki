@@ -1,12 +1,15 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
+import { useRouter } from "next/navigation"
 import { LayoutDashboard, ShoppingBag, ListOrdered, FlaskConical } from "lucide-react"
+import { toast } from "sonner"
 import { OverviewTab } from "./overview-tab"
 import { OrdersTab } from "./orders-tab"
 import { ProductsTab } from "./products-tab"
 import { FichesTechniquesTab } from "./fiches-techniques-tab"
 import type { FicheTechnique } from "@/app/actions/fiches"
+import { getLatestOrderIdAction } from "@/app/actions/order"
 
 type Tab = "overview" | "orders" | "products" | "fiches"
 
@@ -22,6 +25,30 @@ export function AdminTabs({
   initialFiches: FicheTechnique[]
 }) {
   const [activeTab, setActiveTab] = useState<Tab>("overview")
+  const router = useRouter()
+  const latestOrderIdRef = useRef<string | null>(initialOrders.length > 0 ? initialOrders[0].id : null)
+
+  useEffect(() => {
+    // Play sound and show toast
+    const notifyNewOrder = () => {
+      const audio = new Audio('/notification.mp3')
+      audio.play().catch(e => console.error("Audio play failed:", e))
+      toast.success("🚨 NOUVELLE COMMANDE REÇUE !", { duration: 10000 })
+    }
+
+    const interval = setInterval(async () => {
+      const latestId = await getLatestOrderIdAction()
+      if (latestId && latestOrderIdRef.current && latestId !== latestOrderIdRef.current) {
+        latestOrderIdRef.current = latestId
+        notifyNewOrder()
+        router.refresh() // re-fetch server components
+      } else if (latestId && !latestOrderIdRef.current) {
+        latestOrderIdRef.current = latestId
+      }
+    }, 10000)
+
+    return () => clearInterval(interval)
+  }, [router])
 
   const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
     { key: "overview", label: "Vue d'ensemble", icon: <LayoutDashboard className="h-4 w-4" /> },
