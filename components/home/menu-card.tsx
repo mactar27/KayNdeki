@@ -21,7 +21,7 @@ export function MenuCard({ item, allItems = [], isDrink = false }: { item: MenuI
 
   return (
     <>
-      <div className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-shadow hover:shadow-md">
+      <div className="flex flex-col overflow-hidden rounded-2xl border border-sky-100 bg-sky-50 shadow-sm transition-shadow hover:shadow-md">
         {/* Clickable image area */}
         <button
           onClick={() => setIsCustomizerOpen(true)}
