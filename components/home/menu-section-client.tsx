@@ -14,7 +14,7 @@ export function MenuSectionClient({ items }: { items: MenuItem[] }) {
   const drinks = items.filter(i => i.category === "drink")
 
   return (
-    <section id="menu" className="py-16 md:py-24 bg-transparent">
+    <section id="menu" className="pt-8 pb-16 md:pt-12 md:pb-24 bg-transparent">
       <div className="mx-auto max-w-6xl px-4">
 
         <div className="text-center mb-8 px-2">
