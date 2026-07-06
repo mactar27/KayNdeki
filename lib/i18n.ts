@@ -198,6 +198,12 @@ export const translations = {
     checkout_empty_title: "Votre panier est vide",
     checkout_empty_desc: "Vous n'avez pas encore ajouté de sandwichs ou de boissons à votre commande.",
     checkout_menu_btn: "Composer mon menu",
+
+    // Not Found
+    not_found_title: "Oups ! Page introuvable",
+    not_found_desc: "Il semblerait que vous vous soyez perdu. La page que vous cherchez n'existe pas ou a été déplacée.",
+    not_found_home_btn: "Retour à l'accueil",
+    not_found_menu_btn: "Voir le menu 🥐",
   },
 
   wo: {
@@ -397,7 +403,12 @@ export const translations = {
     contact_message: "Xabar",
     contact_message_placeholder: "Bindal li nga bëgg…",
     contact_send: "Yabal xabar bi",
-    
+
+    // Not Found
+    not_found_title: "Ndeysaan ! Xëti ngir mi amul",
+    not_found_desc: "Dafa melni danga réer. Xëti ngir mi ngay wut amul walla jële nañu ko fi.",
+    not_found_home_btn: "Delu kër gi",
+    not_found_menu_btn: "Xoolal lëlu lekk yi 🥐",
   },
 
   en: {
@@ -595,6 +606,12 @@ export const translations = {
     contact_message: "Message",
     contact_message_placeholder: "Describe your request…",
     contact_send: "Send message",
+
+    // Not Found
+    not_found_title: "Oops! Page not found",
+    not_found_desc: "It looks like you're lost. The page you're looking for doesn't exist or has been moved.",
+    not_found_home_btn: "Back to Home",
+    not_found_menu_btn: "View Menu 🥐",
   }
 } satisfies Record<Lang, Record<string, string>>
 

@@ -17,11 +17,11 @@ export default function NotFound() {
       </div>
       
       <h1 className="text-5xl md:text-6xl font-script text-primary mb-4 tracking-tight">
-        Oups ! Page introuvable
+        {t("not_found_title")}
       </h1>
       
       <p className="text-lg text-slate-500 mb-8 max-w-md">
-        Il semblerait que vous vous soyez perdu. La page que vous cherchez n'existe pas ou a été déplacée.
+        {t("not_found_desc")}
       </p>
       
       <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
@@ -30,14 +30,14 @@ export default function NotFound() {
           className="flex items-center justify-center gap-2 bg-[#1A56DB] text-white px-8 py-3.5 rounded-full font-bold hover:bg-blue-700 transition shadow-sm hover:shadow active:scale-95"
         >
           <ArrowLeft className="h-5 w-5" />
-          Retour à l'accueil
+          {t("not_found_home_btn")}
         </Link>
         
         <Link 
           href="/menu"
           className="flex items-center justify-center bg-white text-slate-700 border border-slate-200 px-8 py-3.5 rounded-full font-bold hover:bg-slate-50 hover:text-slate-900 transition active:scale-95"
         >
-          Voir le menu 🥐
+          {t("not_found_menu_btn")}
         </Link>
       </div>
     </main>
