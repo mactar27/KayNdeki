@@ -1,7 +1,7 @@
 "use client"
 
 import { formatFCFA } from "@/lib/menu-data"
-import { Package, Clock, CheckCircle2, XCircle, Trash2 } from "lucide-react"
+import { Package, Clock, CheckCircle2, XCircle, Trash2, Printer } from "lucide-react"
 import { updateOrderStatusAction, deleteAllOrdersAction } from "@/app/actions/order"
 import { useTransition } from "react"
 
@@ -14,6 +14,160 @@ export function OrdersTab({ orders }: { orders: any[] }) {
         await deleteAllOrdersAction()
       })
     }
+  }
+
+  const handlePrint = (order: any) => {
+    const printWindow = window.open('', '_blank', 'width=400,height=600')
+    if (!printWindow) {
+      alert("Veuillez autoriser les popups pour imprimer le reçu.")
+      return
+    }
+
+    const html = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Reçu - ${order.customer_name}</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>
+            @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+            
+            body { 
+              font-family: 'Courier Prime', monospace; 
+              color: #000; 
+              padding: 0; 
+              margin: 0;
+              background: #fff;
+              font-size: 12px;
+            }
+            .receipt-container {
+              width: 80mm; /* Standard thermal printer width */
+              margin: 0 auto;
+              background: #fff;
+              padding: 10px;
+            }
+            .header { text-align: center; margin-bottom: 15px; }
+            .title { font-size: 22px; font-weight: bold; margin: 0 0 5px 0; }
+            .subtitle { font-size: 12px; margin: 0 0 5px 0; }
+            .contact { font-size: 12px; margin: 0; }
+            
+            .divider { border-top: 1px dashed #000; margin: 10px 0; }
+            
+            .info { line-height: 1.4; margin-bottom: 10px; }
+            .info p { margin: 3px 0; display: flex; justify-content: space-between; }
+            .info strong { font-weight: bold; }
+            
+            .items { margin: 15px 0; }
+            
+            .item-row { display: flex; justify-content: space-between; margin-bottom: 3px; font-weight: bold; }
+            .item-details { font-size: 10px; padding-left: 15px; margin-bottom: 5px; color: #333; }
+            
+            .totals { margin-top: 15px; }
+            .total-row { display: flex; justify-content: space-between; margin-bottom: 5px; }
+            .grand-total { 
+              font-size: 16px; 
+              font-weight: bold; 
+              margin-top: 10px; 
+              border-top: 1px dashed #000; 
+              padding-top: 10px; 
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            }
+            
+            .qr-container { text-align: center; margin: 20px 0 10px 0; }
+            .qr-container img { width: 100px; height: 100px; }
+            
+            .footer { text-align: center; font-size: 12px; line-height: 1.5; margin-top: 15px; }
+            
+            @media print {
+              @page { margin: 0; }
+              body { padding: 0; background: #fff; }
+              /* Force width to 80mm even on A4 */
+              .receipt-container { 
+                width: 80mm; 
+                margin: 0 auto; 
+                padding: 5px; 
+              }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="receipt-container">
+            <div class="header">
+              <p class="title">KAY NDEKI</p>
+              <p class="subtitle">Le petit-déjeuner sur-mesure</p>
+              <p class="contact">Dakar, Sénégal<br>+221 77 000 00 00</p>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <div class="info">
+              <p><span>Date:</span> <strong>${new Date(order.created_at).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' })}</strong></p>
+              <p><span>Client:</span> <strong>${order.customer_name}</strong></p>
+              <p><span>Tel:</span> <strong>${order.phone}</strong></p>
+              <div style="margin: 3px 0;">
+                <span>Adresse:</span><br>
+                <strong>${order.address}</strong>
+              </div>
+              <p><span>Paiement:</span> <strong>${order.payment_method === 'cash' ? 'Espèces' : order.payment_method}</strong></p>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <div class="items">
+              ${order.items.map((item: any) => `
+                <div class="item-row">
+                  <span>${item.qty}x ${item.title}</span>
+                  <span>${formatFCFA(item.unit_price * item.qty)}</span>
+                </div>
+                ${item.details ? `<div class="item-details">${item.details}</div>` : ''}
+              `).join('')}
+            </div>
+            
+            <div class="divider"></div>
+            
+            <div class="totals">
+              <div class="total-row">
+                <span>Sous-total</span>
+                <strong>${formatFCFA(order.subtotal)}</strong>
+              </div>
+              <div class="total-row">
+                <span>Livraison</span>
+                <strong>${formatFCFA(order.delivery_fee)}</strong>
+              </div>
+              <div class="grand-total">
+                <span>TOTAL</span>
+                <span>${formatFCFA(order.total)}</span>
+              </div>
+            </div>
+            
+            <div class="qr-container">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&margin=0&data=${encodeURIComponent(order.id)}" alt="QR Code" />
+              <div style="font-size: 10px; margin-top: 5px;">ID: ${order.id.substring(0, 8).toUpperCase()}</div>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <div class="footer">
+              <p><strong>Merci pour votre confiance !</strong></p>
+              <p>Bon appétit 🥐</p>
+            </div>
+          </div>
+          <script>
+            window.onload = () => {
+              setTimeout(() => {
+                window.print();
+                setTimeout(() => window.close(), 500);
+              }, 500);
+            }
+          </script>
+        </body>
+      </html>
+    `
+    
+    printWindow.document.write(html)
+    printWindow.document.close()
   }
 
   return (
@@ -141,6 +295,12 @@ export function OrdersTab({ orders }: { orders: any[] }) {
                   >
                     Contacter sur WhatsApp
                   </a>
+                  <button 
+                    onClick={() => handlePrint(order)}
+                    className="w-full flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl py-2.5 px-4 text-sm font-semibold transition"
+                  >
+                    <Printer className="h-4 w-4" /> Imprimer le reçu
+                  </button>
                 </div>
               </div>
             </div>

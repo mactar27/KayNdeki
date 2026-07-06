@@ -5,6 +5,7 @@ import { INGREDIENTS, INGREDIENT_CATEGORIES, Ingredient } from "@/lib/ingredient
 import { useCart } from "@/components/cart/cart-provider"
 import { X, Check, Plus, Minus } from "lucide-react"
 import { toast } from "sonner"
+import { useTranslation } from "@/components/providers/language-provider"
 
 interface SandwichBuilderProps {
   isOpen: boolean
@@ -14,10 +15,28 @@ interface SandwichBuilderProps {
 
 export function SandwichBuilder({ isOpen, onClose, isInline = false }: SandwichBuilderProps) {
   const { addItem } = useCart()
+  const { t, lang } = useTranslation()
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [quantity, setQuantity] = useState(1)
 
   if (!isOpen) return null
+
+  const getIngredientName = (ing: Ingredient) => {
+    if (lang === "wo" && ing.nameWo) return ing.nameWo
+    if (lang === "en" && ing.nameEn) return ing.nameEn
+    return ing.name
+  }
+
+  const getCategoryLabel = (cat: string) => {
+    switch (cat) {
+      case "base": return t("builder_cat_base")
+      case "protein": return t("builder_cat_protein")
+      case "veggies": return t("builder_cat_veggies")
+      case "extras": return t("builder_cat_extras")
+      case "sauces": return t("builder_cat_sauces")
+      default: return cat
+    }
+  }
 
   const toggleIngredient = (id: string) => {
     setSelectedIds(prev =>
@@ -47,13 +66,13 @@ export function SandwichBuilder({ isOpen, onClose, isInline = false }: SandwichB
       {
         key: `custom-${Date.now()}`,
         name: "Sandwich Sur-Mesure",
-        details: selected.map(i => i.name).join(", "),
+        details: selected.map(getIngredientName).join(", "),
         price: totalPrice / quantity,
         image: "/products/ingredients.png",
       },
       quantity
     )
-    toast.success("Sandwich personnalisé ajouté au panier !")
+    toast.success(t("builder_success"))
     if (!isInline) onClose()
     setSelectedIds([])
     setQuantity(1)
@@ -70,8 +89,8 @@ export function SandwichBuilder({ isOpen, onClose, isInline = false }: SandwichB
       {/* Header */}
       <div className="flex items-center justify-between border-b border-slate-100 p-6 shrink-0">
         <div>
-          <h2 className="text-2xl font-bold text-slate-800">Compose ton sandwich</h2>
-          <p className="text-sm text-slate-500">Choisis tes ingrédients préférés</p>
+          <h2 className="text-2xl font-bold text-slate-800">{t("builder_title")}</h2>
+          <p className="text-sm text-slate-500">{t("builder_subtitle")}</p>
         </div>
         {!isInline && (
           <button
@@ -92,10 +111,10 @@ export function SandwichBuilder({ isOpen, onClose, isInline = false }: SandwichB
           return (
             <div key={catKey}>
               <h3 className="mb-4 text-lg font-bold text-slate-800 border-b border-slate-100 pb-2 flex items-center gap-2">
-                {catLabel}
+                {getCategoryLabel(catKey)}
                 {catKey === "sauces" && (
                   <span className="text-[11px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full font-medium">
-                    2 gratuites, puis +100 FCFA
+                    {t("builder_sauce_note")}
                   </span>
                 )}
               </h3>
@@ -117,14 +136,14 @@ export function SandwichBuilder({ isOpen, onClose, isInline = false }: SandwichB
                     >
                       <div className="flex w-full items-center justify-between mb-2">
                         <span className={`font-semibold text-sm ${isSelected ? "text-primary" : "text-slate-700"}`}>
-                          {ing.name}
+                          {getIngredientName(ing)}
                         </span>
                         <div className={`flex size-5 shrink-0 items-center justify-center rounded-full border ${isSelected ? "bg-primary border-primary text-white" : "border-slate-300"}`}>
                           {isSelected && <Check className="size-3" />}
                         </div>
                       </div>
                       <span className="text-xs font-medium text-slate-500">
-                        {displayPrice === 0 ? "Gratuit" : `+ ${displayPrice} FCFA`}
+                        {displayPrice === 0 ? t("menu_free") : `+ ${displayPrice} FCFA`}
                       </span>
                     </button>
                   )
@@ -155,7 +174,7 @@ export function SandwichBuilder({ isOpen, onClose, isInline = false }: SandwichB
               </button>
             </div>
             <div>
-              <p className="text-sm text-slate-500 font-medium">Total</p>
+              <p className="text-sm text-slate-500 font-medium">{t("cart_total")}</p>
               <p className="text-xl font-bold text-primary">{totalPrice} FCFA</p>
             </div>
           </div>
@@ -164,7 +183,7 @@ export function SandwichBuilder({ isOpen, onClose, isInline = false }: SandwichB
             disabled={selectedIds.length === 0}
             className="w-full sm:w-auto rounded-full bg-primary px-8 py-3.5 font-bold text-white shadow-lg shadow-primary/30 transition hover:scale-105 active:scale-95 disabled:opacity-50"
           >
-            Ajouter au panier
+            {t("builder_add_to_cart")}
           </button>
         </div>
       </div>

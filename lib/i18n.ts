@@ -45,6 +45,18 @@ export const translations = {
     menu_tab_drinks: "Nos Boissons",
     menu_tab_custom: "Sur Mesure",
 
+    // Builder
+    builder_title: "Compose ton sandwich",
+    builder_subtitle: "Choisis tes ingrédients préférés",
+    builder_cat_base: "Base (Pain)",
+    builder_cat_protein: "Garniture Principale",
+    builder_cat_veggies: "Crudités",
+    builder_cat_extras: "Suppléments",
+    builder_cat_sauces: "Sauces",
+    builder_sauce_note: "2 gratuites, puis +100 FCFA",
+    builder_add_to_cart: "Ajouter au panier",
+    builder_success: "Sandwich personnalisé ajouté au panier !",
+
     // Cart
     cart_title: "Mon panier",
     cart_empty: "Ton panier est vide.",
@@ -231,6 +243,18 @@ export const translations = {
     menu_tab_sandwichs: "Sunu Mburu yi",
     menu_tab_drinks: "Sunu Ndox mi",
     menu_tab_custom: "Sa Ndeki Bopp",
+
+    // Builder
+    builder_title: "Defaral sa mburu bopp",
+    builder_subtitle: "Tànnal li nga bëgg mu soti ci",
+    builder_cat_base: "Mburu mi",
+    builder_cat_protein: "Yàpp / Li ciy nekk",
+    builder_cat_veggies: "Ñax mi / Salade",
+    builder_cat_extras: "Yeneen yi",
+    builder_cat_sauces: "Maayo yi",
+    builder_sauce_note: "2 dëgëñ, bu rawé +100 FCFA",
+    builder_add_to_cart: "Duggal ci sama mbus",
+    builder_success: "Mburu mi dugal nanu ko ci sa mbus !",
 
     // Cart
     cart_title: "Sama mbus / Panier bi",
@@ -446,6 +470,18 @@ export const translations = {
     menu_tab_sandwichs: "Our Sandwiches",
     menu_tab_drinks: "Our Drinks",
     menu_tab_custom: "Custom Made",
+
+    // Builder
+    builder_title: "Build your sandwich",
+    builder_subtitle: "Choose your favorite ingredients",
+    builder_cat_base: "Base (Bread)",
+    builder_cat_protein: "Main Filling",
+    builder_cat_veggies: "Vegetables",
+    builder_cat_extras: "Extras",
+    builder_cat_sauces: "Sauces",
+    builder_sauce_note: "2 free, then +100 FCFA",
+    builder_add_to_cart: "Add to cart",
+    builder_success: "Custom sandwich added to cart!",
 
     // Cart
     cart_title: "My Cart",
