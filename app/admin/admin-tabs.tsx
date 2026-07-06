@@ -10,6 +10,7 @@ import { ProductsTab } from "./products-tab"
 import { FichesTechniquesTab } from "./fiches-techniques-tab"
 import type { FicheTechnique } from "@/app/actions/fiches"
 import { getLatestOrderIdAction } from "@/app/actions/order"
+import { PushNotificationToggle } from "@/components/admin/push-notification-toggle"
 
 type Tab = "overview" | "orders" | "products" | "fiches"
 
@@ -29,11 +30,23 @@ export function AdminTabs({
   const latestOrderIdRef = useRef<string | null>(initialOrders.length > 0 ? initialOrders[0].id : null)
 
   useEffect(() => {
-    // Play sound and show toast
-    const notifyNewOrder = () => {
+    // Play sound, show toast AND send web push
+    const notifyNewOrder = async () => {
       const audio = new Audio('/notification.mp3')
       audio.play().catch(e => console.error("Audio play failed:", e))
       toast.success("🚨 NOUVELLE COMMANDE REÇUE !", { duration: 10000 })
+      // Trigger web push to all subscribed devices
+      try {
+        await fetch("/api/push/notify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: "🚨 Kay Ndeki - Nouvelle commande !",
+            body: "Un client vient de passer une commande. Vérifiez votre tableau de bord.",
+            url: "/admin",
+          })
+        })
+      } catch(e) { console.error("Push notification failed:", e) }
     }
 
     const interval = setInterval(async () => {
@@ -59,6 +72,10 @@ export function AdminTabs({
 
   return (
     <div>
+      {/* Push Notification Toggle */}
+      <div className="mb-6">
+        <PushNotificationToggle />
+      </div>
       {/* Tabs Navigation */}
       <div className="flex border-b border-slate-200 mb-8 overflow-x-auto">
         {tabs.map((tab) => (

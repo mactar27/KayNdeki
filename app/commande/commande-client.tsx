@@ -9,6 +9,7 @@ import Link from "next/link"
 import { ArrowLeft, CheckCircle2, AlertCircle, MessageCircle } from "lucide-react"
 import Image from "next/image"
 import { createOrderAction } from "@/app/actions/order"
+import { toast } from "sonner"
 
 export function CommandeClient() {
   const { items, subtotal, clear } = useCart()
@@ -95,11 +96,18 @@ export function CommandeClient() {
     setIsSubmitting(false)
 
     if (res.success) {
-      setWhatsappLink(`https://wa.me/221770000000?text=${message}`)
+      const link = `https://wa.me/221770000000?text=${message}`
+      toast.success("🎉 Commande confirmée !", {
+        description: "Votre commande a bien été enregistrée !",
+        duration: 6000,
+      })
+      setWhatsappLink(link)
       setIsSuccess(true)
       clear()
     } else {
-      alert("Une erreur est survenue lors de l'enregistrement de votre commande. Veuillez réessayer.")
+      toast.error("Erreur", {
+        description: "Une erreur est survenue. Veuillez réessayer."
+      })
     }
   }
 
@@ -107,19 +115,17 @@ export function CommandeClient() {
     return (
       <main className="min-h-screen bg-background pt-24 pb-16">
         <div className="mx-auto max-w-md px-4 text-center">
-          <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-green-100 text-green-600">
+          <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-green-100 text-green-600 animate-in zoom-in duration-300">
             <CheckCircle2 className="h-12 w-12" />
           </div>
-          <h1 className="text-3xl font-bold text-slate-800 mb-4">{t("checkout_success_title")}</h1>
-          <p className="text-slate-600 mb-8">
-            {t("checkout_success_desc")}
-          </p>
+          <h1 className="text-3xl font-bold text-slate-800 mb-3">🎉 {t("checkout_success_title")}</h1>
+          <p className="text-slate-600 mb-8">{t("checkout_success_desc")}</p>
           <div className="space-y-4">
-            <a 
+            <a
               href={whatsappLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 bg-[#25D366] text-white hover:bg-[#20bd5a] px-4 py-2 w-full rounded-full h-12 font-semibold transition"
+              className="flex items-center justify-center gap-2 bg-[#25D366] text-white hover:bg-[#20bd5a] px-4 py-2 w-full rounded-full h-14 font-semibold transition text-base"
             >
               <MessageCircle className="h-5 w-5" /> {t("checkout_whatsapp_btn")}
             </a>
@@ -223,25 +229,6 @@ export function CommandeClient() {
                 />
               </div>
 
-              <h2 className="text-xl font-bold text-slate-800 border-b border-slate-100 pb-4 pt-4">{t("checkout_step2")}</h2>
-              
-              <div className="grid gap-4 sm:grid-cols-1">
-                {[
-                  { id: "cash", label: t("checkout_cash"), color: "text-green-600" },
-                ].map(pm => (
-                  <label key={pm.id} className={`relative flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 p-4 text-center transition-all ${formData.payment === pm.id ? 'border-[#1A56DB] bg-blue-50/50' : 'border-slate-100 hover:border-slate-200 bg-white'}`}>
-                    <input
-                      type="radio"
-                      name="payment"
-                      value={pm.id}
-                      checked={formData.payment === pm.id}
-                      onChange={handleChange}
-                      className="sr-only"
-                    />
-                    <span className={`font-bold ${pm.color}`}>{pm.label}</span>
-                  </label>
-                ))}
-              </div>
             </form>
           </div>
 
