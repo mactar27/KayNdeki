@@ -84,7 +84,7 @@ export function CommandeClient() {
       total,
       items: items.map(i => ({
         key: i.key,
-        id: i.id,
+        id: i.key,
         name: i.name,
         details: i.details || "",
         price: i.price,

@@ -30,3 +30,15 @@ export async function checkAdminStatus() {
   const session = cookieStore.get("admin_session")
   return session?.value === "authenticated"
 }
+
+export async function loginAction(prevState: any, formData: FormData) {
+  // TODO: Implémenter la logique de connexion client
+  // Pour le moment on simule une erreur car ce n'est pas encore implémenté
+  return { error: "Connexion non implémentée", ok: false }
+}
+
+export async function registerAction(prevState: any, formData: FormData) {
+  // TODO: Implémenter la logique d'inscription client
+  // Pour le moment on simule une erreur car ce n'est pas encore implémenté
+  return { error: "Inscription non implémentée", ok: false }
+}

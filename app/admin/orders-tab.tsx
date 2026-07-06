@@ -113,14 +113,14 @@ export function OrdersTab({ orders }: { orders: any[] }) {
                   {order.status === "pending" ? (
                     <>
                       <button 
-                        onClick={() => startTransition(() => updateOrderStatusAction(order.id, "delivered"))}
+                        onClick={() => startTransition(async () => { await updateOrderStatusAction(order.id, "delivered") })}
                         disabled={isPending}
                         className="w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white rounded-xl py-2.5 px-4 text-sm font-semibold transition disabled:opacity-50"
                       >
                         <CheckCircle2 className="h-4 w-4" /> Marquer comme livrée
                       </button>
                       <button 
-                        onClick={() => startTransition(() => updateOrderStatusAction(order.id, "cancelled"))}
+                        onClick={() => startTransition(async () => { await updateOrderStatusAction(order.id, "cancelled") })}
                         disabled={isPending}
                         className="w-full flex items-center justify-center gap-2 bg-white hover:bg-red-50 text-red-600 border border-slate-200 hover:border-red-200 rounded-xl py-2.5 px-4 text-sm font-semibold transition disabled:opacity-50"
                       >

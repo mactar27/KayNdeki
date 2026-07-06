@@ -308,7 +308,7 @@ function NewIngredientForm({ ficheId, position, onDone }: { ficheId: string; pos
             <Check className="size-3.5" />
           </button>
           <button
-            onClick={onDone}
+            onClick={() => onDone()}
             className="flex size-7 items-center justify-center rounded-lg bg-slate-100 text-slate-500 hover:bg-slate-200 transition"
           >
             <X className="size-3.5" />

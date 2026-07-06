@@ -38,6 +38,12 @@ export const translations = {
     menu_compose_sub: "Sélectionne tes ingrédients préférés pour un repas sur-mesure.",
     menu_see_all: "Voir tous les produits →",
     menu_compose_full: "Composer ma commande",
+    menu_section_title: "Choisis ton petit déjeuner idéal",
+    menu_section_subtitle: "pour bien commencer ta journée !",
+    menu_tab_box: "La Box",
+    menu_tab_sandwichs: "Nos Sandwichs",
+    menu_tab_drinks: "Nos Boissons",
+    menu_tab_custom: "Sur Mesure",
 
     // Cart
     cart_title: "Mon panier",
@@ -219,6 +225,12 @@ export const translations = {
     menu_compose_sub: "Tànnal li nga gënë bëgg mu soti ci sa mburu ngir lekk li nga am bëgg-bëgg.",
     menu_see_all: "Xool jàpp yi yépp →",
     menu_compose_full: "Defaral sama commande fi mu ne",
+    menu_section_title: "Tànnal sa ndeki bu baax",
+    menu_section_subtitle: "ngir door sa bës ci jàmm !",
+    menu_tab_box: "Box bi",
+    menu_tab_sandwichs: "Sunu Mburu yi",
+    menu_tab_drinks: "Sunu Ndox mi",
+    menu_tab_custom: "Sa Ndeki Bopp",
 
     // Cart
     cart_title: "Sama mbus / Panier bi",
@@ -428,6 +440,12 @@ export const translations = {
     menu_compose_sub: "Select your favorite ingredients for a custom meal.",
     menu_see_all: "See all products →",
     menu_compose_full: "Compose my order",
+    menu_section_title: "Choose your ideal breakfast",
+    menu_section_subtitle: "to start your day right!",
+    menu_tab_box: "The Box",
+    menu_tab_sandwichs: "Our Sandwiches",
+    menu_tab_drinks: "Our Drinks",
+    menu_tab_custom: "Custom Made",
 
     // Cart
     cart_title: "My Cart",

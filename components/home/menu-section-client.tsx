@@ -5,8 +5,10 @@ import { type MenuItem } from "@/lib/menu-data"
 import { MenuCard } from "./menu-card"
 import { Sandwich, CupSoda, ChefHat, Package } from "lucide-react"
 import { SandwichBuilder } from "@/components/commande/sandwich-builder"
+import { useTranslation } from "@/components/providers/language-provider"
 
 export function MenuSectionClient({ items }: { items: MenuItem[] }) {
+  const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState<"box" | "sandwichs" | "boissons" | "surmesure">("box")
   
   const boxes = items.filter(i => i.category === "box")
@@ -19,10 +21,10 @@ export function MenuSectionClient({ items }: { items: MenuItem[] }) {
 
         <div className="text-center mb-8 px-2">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-script text-[#1A56DB] mb-3">
-            Choisis ton petit déjeuner idéal
+            {t("menu_section_title")}
           </h2>
           <p className="text-slate-500 text-base sm:text-lg">
-            pour bien commencer ta journée !
+            {t("menu_section_subtitle")}
           </p>
         </div>
 
@@ -38,7 +40,7 @@ export function MenuSectionClient({ items }: { items: MenuItem[] }) {
               }`}
             >
               <Package className="size-4 sm:size-5" />
-              La Box
+              {t("menu_tab_box")}
             </button>
             <button
               onClick={() => setActiveTab("sandwichs")}
@@ -49,7 +51,7 @@ export function MenuSectionClient({ items }: { items: MenuItem[] }) {
               }`}
             >
               <Sandwich className="size-4 sm:size-5" />
-              Nos Sandwichs
+              {t("menu_tab_sandwichs")}
             </button>
             <button
               onClick={() => setActiveTab("boissons")}
@@ -60,7 +62,7 @@ export function MenuSectionClient({ items }: { items: MenuItem[] }) {
               }`}
             >
               <CupSoda className="size-4 sm:size-5" />
-              Nos Boissons
+              {t("menu_tab_drinks")}
             </button>
             <button
               onClick={() => setActiveTab("surmesure")}
@@ -71,7 +73,7 @@ export function MenuSectionClient({ items }: { items: MenuItem[] }) {
               }`}
             >
               <ChefHat className="size-4 sm:size-5" />
-              Sur Mesure
+              {t("menu_tab_custom")}
             </button>
           </div>
         </div>

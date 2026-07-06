@@ -289,6 +289,10 @@ export function ProductsTab({ products }: { products: any[] }) {
                       className="w-full rounded-xl border border-slate-200 px-4 py-2.5 outline-none focus:border-[#1A56DB] transition-colors bg-white"
                     >
                       <option value="sandwich">Sandwich</option>
+                      <option value="box">La Box</option>
+                      <option value="ingredients">Ingrédient</option>
+                      <option value="sauce">Sauce</option>
+                      <option value="breakfast">Petit Déjeuner</option>
                       <option value="drink">Boisson</option>
                     </select>
                   </div>
