@@ -1,19 +1,21 @@
 "use client"
 
 import { formatFCFA } from "@/lib/menu-data"
-import { Package, Clock, CheckCircle2, XCircle, Trash2, Printer } from "lucide-react"
+import { Package, Clock, CheckCircle2, XCircle, Trash2, Printer, AlertTriangle } from "lucide-react"
 import { updateOrderStatusAction, deleteAllOrdersAction } from "@/app/actions/order"
-import { useTransition } from "react"
+import { useTransition, useState } from "react"
+import { toast } from "sonner"
 
 export function OrdersTab({ orders }: { orders: any[] }) {
   const [isPending, startTransition] = useTransition()
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false)
 
-  const handleDeleteAll = () => {
-    if (window.confirm("Êtes-vous sûr de vouloir supprimer TOUTES les commandes ? Cette action est irréversible.")) {
-      startTransition(async () => {
-        await deleteAllOrdersAction()
-      })
-    }
+  const confirmDeleteAll = () => {
+    startTransition(async () => {
+      await deleteAllOrdersAction()
+      setShowConfirmDelete(false)
+      toast.success("Toutes les commandes ont été purgées.")
+    })
   }
 
   const handlePrint = (order: any) => {
@@ -175,7 +177,7 @@ export function OrdersTab({ orders }: { orders: any[] }) {
       {orders.length > 0 && (
         <div className="flex justify-end">
           <button 
-            onClick={handleDeleteAll}
+            onClick={() => setShowConfirmDelete(true)}
             disabled={isPending}
             className="bg-white hover:bg-red-50 text-red-600 border border-slate-200 hover:border-red-200 px-4 py-2 rounded-xl flex items-center gap-2 text-sm font-medium transition disabled:opacity-50"
           >
