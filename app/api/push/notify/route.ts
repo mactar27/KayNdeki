@@ -2,14 +2,19 @@ import { NextRequest, NextResponse } from "next/server"
 import webpush from "web-push"
 import { getAllSubscriptions, deleteSubscription } from "@/lib/push-db"
 
-webpush.setVapidDetails(
-  "mailto:admin@kayndeki.sn",
-  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
-  process.env.VAPID_PRIVATE_KEY!
-)
-
 export async function POST(req: NextRequest) {
   try {
+    if (!process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || !process.env.VAPID_PRIVATE_KEY) {
+      console.warn("VAPID keys missing. Notifications disabled.")
+      return NextResponse.json({ success: false, error: "VAPID keys not configured" })
+    }
+
+    webpush.setVapidDetails(
+      "mailto:admin@kayndeki.sn",
+      process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
+      process.env.VAPID_PRIVATE_KEY
+    )
+
     const { title, body, url } = await req.json()
 
     const subscriptions = await getAllSubscriptions()
