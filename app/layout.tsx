@@ -60,7 +60,7 @@ export default async function RootLayout({
               </div>
             </AppInitializer>
           </CartProvider>
-          <Toaster position="top-center" richColors />
+          <Toaster position="top-center" />
           {process.env.NODE_ENV === "production" && <Analytics />}
         </LanguageProvider>
       </body>
