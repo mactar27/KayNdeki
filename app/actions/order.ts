@@ -22,16 +22,19 @@ export interface OrderInput {
   }>
 }
 
+import { sendSMS } from "@/lib/sms"
+
 export async function createOrderAction(input: OrderInput) {
   // Graceful fallback if no database is configured (for local testing)
   if (!process.env.DATABASE_URL) {
     console.log("DATABASE_URL non configurée, la commande n'a pas été sauvegardée en base de données.")
+    // Simulate SMS even without DB for testing
+    sendSMS(input.phone, `Kay Ndeki : Votre commande a bien été reçue et est en cours de préparation. 🥐`).catch(console.error)
     return { success: true, orderId: "dummy-" + randomUUID() }
   }
 
   const pool = getPool()
   const orderId = randomUUID()
-  const now = new Date()
 
   try {
     // In a real app we would use a transaction
@@ -58,6 +61,11 @@ export async function createOrderAction(input: OrderInput) {
         [orderId, item.name, item.details || "", item.price, item.qty]
       )
     }
+
+    // Send the SMS notification to the customer
+    const firstName = input.name.split(' ')[0]
+    const message = `Bonjour ${firstName}, Kay Ndeki a bien reçu votre commande ! Nous la préparons avec soin. Le livreur vous contactera bientôt. 🥐`
+    sendSMS(input.phone, message).catch(console.error)
 
     return { success: true, orderId }
   } catch (error) {
