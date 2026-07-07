@@ -100,8 +100,34 @@ export function PushNotificationToggle() {
     }
   }
 
-  if (permission === "unsupported") return null
+  if (permission === "unsupported") {
+    // Basic iOS detection
+    const isIOS = typeof window !== "undefined" && 
+      (/iPad|iPhone|iPod/.test(navigator.userAgent) || 
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1));
+      
+    const isStandalone = typeof window !== "undefined" && 
+      (window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone);
 
+    if (isIOS && !isStandalone) {
+      return (
+        <div className="flex items-center gap-3 bg-blue-50 border border-blue-200 rounded-xl p-4 shadow-sm">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-100">
+            <Bell className="h-5 w-5 text-blue-600" />
+          </div>
+          <div>
+            <p className="font-semibold text-blue-900 text-sm">Notifications sur iPhone</p>
+            <p className="text-xs text-blue-700 mt-1">
+              Pour activer les alertes sonores et notifications, appuyez sur l'icône <strong>Partager</strong> <span className="inline-block border border-blue-300 rounded px-1">⎋</span> en bas de votre écran, puis choisissez <strong>Sur l'écran d'accueil</strong> <span className="inline-block border border-blue-300 rounded px-1">+</span>.
+              Ouvrez ensuite l'application depuis votre accueil !
+            </p>
+          </div>
+        </div>
+      )
+    }
+
+    return null
+  }
   return (
     <div className="flex items-center gap-3 bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
       <div className={`flex h-10 w-10 items-center justify-center rounded-full ${subscribed ? "bg-green-100" : "bg-slate-100"}`}>
